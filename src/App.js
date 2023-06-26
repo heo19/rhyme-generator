@@ -17,8 +17,12 @@ function App() {
 
   const [showError, setShowError] = useState(false);
   const [errorText, setErrorText] = useState("");
-  const handleClose = () => setShowError(false);
-  const handleShow = () => setShowError(true);
+
+  const [showResult, setShowResult] = useState(false);
+
+  const handleCloseError = () => setShowError(false);
+  const handleShowError = () => setShowError(true);
+  const handleShowResult = () => setShowResult(true);
 
   const handleWordChange = (event) => {
     setWord(event.target.value);
@@ -32,17 +36,15 @@ function App() {
     event.preventDefault();
     if (word === "") {
       setErrorText("You need to type a word to generate a rhyme words!")
-      handleShow();
+      handleShowError();
     } else if (typeOfRhyme === "Select Type Of Rhyme") {
       setErrorText("You select a type of rhyme to generate!")
-      handleShow();
+      handleShowError();
     } else {
       console.log('Word value:', word);
       console.log('numberOfWord value:', numberOfWord);
       console.log('typeOfRhyme value:', typeOfRhyme);
-      setWord('');
-      setNumberOfWord(1);
-      setTypeOfRhyme("Select Type Of Rhyme");
+      handleShowResult();
     }
   };
 
@@ -92,13 +94,16 @@ function App() {
             <Button variant="success" className='generateButton' onClick={handleGenerate}>Generate!</Button>
           </div>
 
-          <ResultList className="resultList"></ResultList>
+          <ResultList
+            className="resultList"
+            showResult={showResult}
+          ></ResultList>
         </div>
         <div className='adDiv'></div>
       </div>
       <ErrorModal
         show = {showError}
-        handleClose = {handleClose}
+        handleClose = {handleCloseError}
         errorText = {errorText}
       ></ErrorModal>
     </div>

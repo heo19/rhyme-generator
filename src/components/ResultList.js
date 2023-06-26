@@ -7,7 +7,7 @@ function ResultList(props) {
     const [wordArray, setWordArray] = useState(["Word1", "Word2", "Word3", "Word4"]);
     const [definitionArray, setDefinitionArray] = useState(["Definition1", "Definition2", "Definition3", "Definition4"]);
 
-    return (
+    return (props.showResult) ? (
         <div className='resultList'>
             <ListGroup as="ol" numbered>
                 {wordArray.map((word, index) => {
@@ -26,7 +26,7 @@ function ResultList(props) {
                 })}
             </ListGroup>
         </div>
-    )
+    ) : "";
 }
 
 export default ResultList
