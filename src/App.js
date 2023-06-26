@@ -19,6 +19,7 @@ function App() {
   const [errorText, setErrorText] = useState("");
 
   const [showResult, setShowResult] = useState(false);
+  const [resultText, setResultText] = useState("");
 
   const handleCloseError = () => setShowError(false);
   const handleShowError = () => setShowError(true);
@@ -44,9 +45,37 @@ function App() {
       console.log('Word value:', word);
       console.log('numberOfWord value:', numberOfWord);
       console.log('typeOfRhyme value:', typeOfRhyme);
+      onGenerate();
       handleShowResult();
     }
   };
+
+  async function onGenerate(event) {
+    try {
+      const response = await fetch("./api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          baseWord: word,
+          numberOfWord: numberOfWord,
+          typeOfRhyme: typeOfRhyme,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      setResultText(data.result);
+    } catch(error) {
+      // Consider implementing your own error handling logic here
+      console.error(error);
+      alert(error.message);
+    }
+  }
 
   return (
     <div className="App">
